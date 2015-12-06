@@ -1,5 +1,6 @@
 package timo.cmu.com.timo.activities;
 
+import android.hardware.Sensor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -15,7 +16,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import timo.cmu.com.timo.FrequencyManager;
 import timo.cmu.com.timo.R;
+import timo.cmu.com.timo.Timo;
 import timo.cmu.com.timo.model.SensorData;
 
 import java.util.*;
@@ -24,14 +27,12 @@ import java.util.*;
  * Created by STuotuo.Wen on 2015/11/21.
  */
 public class SensorActivity extends AppCompatActivity {
-    public static Map<String, SensorData[]> settings = new HashMap<String, SensorData[]>();
 
-    private static int NUM_SENSOR = 2;
+    private static int NUM_SENSOR = 13;
     private String pkgName;
     private String appName;
     private Switch[] switches = new Switch[NUM_SENSOR];
     private TextView[] textViews = new TextView[NUM_SENSOR];
-    private SensorData[] sensorDatas = new SensorData[NUM_SENSOR];
     private Button confirmButton;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -43,40 +44,44 @@ public class SensorActivity extends AppCompatActivity {
         setTitle(appName);
 
         confirmButton = (Button) this.findViewById(R.id.button);
+
+        SensorData[] sensorDatas = new SensorData[NUM_SENSOR];
+        Timo.settings.put(pkgName, sensorDatas);
+
         // pressure sensor
-        switches[0] = (Switch) this.findViewById(R.id.accuracy_switch_1);
-        textViews[0] = (TextView) this.findViewById(R.id.freq_min1);
-        sensorDatas[0] = new SensorData("Pressure", true, false, 0);
-        update(0);
+        switches[Sensor.TYPE_PRESSURE] = (Switch) this.findViewById(R.id.accuracy_switch_1);
+        textViews[Sensor.TYPE_PRESSURE] = (TextView) this.findViewById(R.id.freq_min1);
+        sensorDatas[Sensor.TYPE_PRESSURE] = new SensorData("Pressure", true, false, 0);
+        update(Sensor.TYPE_PRESSURE);
 
         // proximity sensor
-        switches[1] = (Switch) this.findViewById(R.id.accuracy_switch_2);
-        textViews[1] = (TextView) this.findViewById(R.id.freq_min2);
-        sensorDatas[1] = new SensorData("Proximity", true, false, 0);
-        update(1);
+        switches[Sensor.TYPE_PROXIMITY] = (Switch) this.findViewById(R.id.accuracy_switch_2);
+        textViews[Sensor.TYPE_PROXIMITY] = (TextView) this.findViewById(R.id.freq_min2);
+        sensorDatas[Sensor.TYPE_PROXIMITY] = new SensorData("Proximity", true, false, 0);
+        update(Sensor.TYPE_PROXIMITY);
 
-        settings.put(pkgName, sensorDatas);
+
 
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SensorActivity.this, settings.get(pkgName)[0].toString() + "\n" +
-                        settings.get(pkgName)[1].toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SensorActivity.this, Timo.settings.get(pkgName)[Sensor.TYPE_PRESSURE].toString() + "\n" +
+                        Timo.settings.get(pkgName)[Sensor.TYPE_PROXIMITY].toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private void update(final int i) {
-        switches[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void update(final int sensor_type) {
+        switches[sensor_type].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                sensorDatas[i].isAccurate = isChecked;
+                Timo.settings.get(pkgName)[sensor_type].isAccurate = isChecked;
             }
         });
 
-        textViews[i].addTextChangedListener(new TextWatcher() {
+        textViews[sensor_type].addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -84,15 +89,17 @@ public class SensorActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String limit = textViews[i].getText().toString();
+                String limit = textViews[sensor_type].getText().toString();
                 int limitVal = 0;
                 try {
                     limitVal = Integer.parseInt(limit);
                 } catch (Exception e) {
                     limitVal = 0;
                 }
-                sensorDatas[i].freqPerMin = limitVal;
-                sensorDatas[i].limitFreq = !limit.isEmpty();
+                Timo.settings.get(pkgName)[sensor_type].freqPerMin = limitVal;
+                Timo.settings.get(pkgName)[sensor_type].limitFreq = !limit.isEmpty();
+                FrequencyManager fm = new FrequencyManager(limitVal, 60 * 1000); //60 senconds, 6000 miliseconds
+                Timo.addFrequencyManager(sensor_type,fm);
             }
 
             @Override
