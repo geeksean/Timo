@@ -2,6 +2,7 @@ package timo.cmu.com.timo;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
@@ -11,6 +12,7 @@ import de.robv.android.xposed.XposedHelpers;
 import timo.cmu.com.timo.model.SensorData;
 
 import android.hardware.Sensor;
+import android.util.Log;
 import android.util.SparseArray;
 
 import java.util.HashMap;
@@ -22,7 +24,7 @@ import java.util.Map;
  */
 public class Timo implements IXposedHookLoadPackage {
     private HashMap<Integer, HashSet<String>> blacklist = new HashMap<>();
-    public static Map<String, SensorData[]> settings = new HashMap<String, SensorData[]>();
+    //public static Map<String, SensorData[]> settings = new HashMap<String, SensorData[]>();
     private static HashMap<Integer, FrequencyManager> frequencyManagers = new HashMap<>();
 
     public Timo() {
@@ -60,7 +62,10 @@ public class Timo implements IXposedHookLoadPackage {
                             XposedBridge.log(lpparam.packageName + " requests to access sensor type: " + s.getType());
                             if (blacklist.get(s.getType()).contains(lpparam.packageName)) {
                                 XposedBridge.log("Block app: " + lpparam.packageName + " from accessing " + s.getType());
-                                XposedBridge.log("Setting: sensor data name" + settings.get(lpparam.packageName)[Sensor.TYPE_PROXIMITY].name);
+                                //XposedBridge.log("Setting: sensor data name" + settings.get(lpparam.packageName)[Sensor.TYPE_PROXIMITY].name);
+                                XSharedPreferences xsp = new XSharedPreferences(this.getClass().getPackage().getName(), lpparam.packageName+"_prefs");
+                                String pref = xsp.getString("i", "No Pref Error.");
+                                XposedBridge.log("Qtong: " +  pref);
 //                                float[] values = (float[]) param.args[1];
 //                                values[0] = 0;
 //                                param.args[1] = values;
@@ -74,6 +79,6 @@ public class Timo implements IXposedHookLoadPackage {
 
     public static void addFrequencyManager(int sensor, FrequencyManager fm) {
         XposedBridge.log("Add Sensor : " + sensor + "'s FreqManager");
-        frequencyManagers.put(sensor,fm);
+        frequencyManagers.put(sensor, fm);
     }
 }

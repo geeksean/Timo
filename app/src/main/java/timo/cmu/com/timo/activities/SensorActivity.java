@@ -1,5 +1,7 @@
 package timo.cmu.com.timo.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,9 +36,13 @@ public class SensorActivity extends AppCompatActivity {
     private Switch[] switches = new Switch[NUM_SENSOR];
     private TextView[] textViews = new TextView[NUM_SENSOR];
     private Button confirmButton;
+    private Context mContext;
+    private SensorData[] sensorDatas = new SensorData[NUM_SENSOR];
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         setContentView(R.layout.activity_sensor);
         Bundle bundle = getIntent().getExtras();
         pkgName = bundle.getString("pkgName");
@@ -45,8 +51,6 @@ public class SensorActivity extends AppCompatActivity {
 
         confirmButton = (Button) this.findViewById(R.id.button);
 
-        SensorData[] sensorDatas = new SensorData[NUM_SENSOR];
-        Timo.settings.put(pkgName, sensorDatas);
 
         // pressure sensor
         switches[Sensor.TYPE_PRESSURE] = (Switch) this.findViewById(R.id.accuracy_switch_1);
@@ -66,10 +70,25 @@ public class SensorActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SensorActivity.this, Timo.settings.get(pkgName)[Sensor.TYPE_PRESSURE].toString() + "\n" +
-                        Timo.settings.get(pkgName)[Sensor.TYPE_PROXIMITY].toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SensorActivity.this, sensorDatas[Sensor.TYPE_PRESSURE].toString() + "\n" +
+                        sensorDatas[Sensor.TYPE_PROXIMITY].toString(), Toast.LENGTH_SHORT).show();
+
+                SharedPreferences sh = mContext.getSharedPreferences(pkgName+"_prefs", Context.MODE_WORLD_READABLE);
+                SharedPreferences.Editor editor = sh.edit();
+                editor.putString("i", prefToString(sensorDatas));
+                editor.commit();
             }
         });
+
+    }
+
+    private String prefToString(SensorData[] sensorDatas){
+        String res = "";
+        for (SensorData sd: sensorDatas){
+            res += (sd == null?"null":sd.toString());
+            res += ";";
+        }
+        return res;
 
     }
 
@@ -77,8 +96,8 @@ public class SensorActivity extends AppCompatActivity {
         switches[sensor_type].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Timo.settings.get(pkgName)[sensor_type].isAccurate = isChecked;
-            }
+                sensorDatas[sensor_type].isAccurate = isChecked;
+        }
         });
 
         textViews[sensor_type].addTextChangedListener(new TextWatcher() {
@@ -96,10 +115,9 @@ public class SensorActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     limitVal = 0;
                 }
-                Timo.settings.get(pkgName)[sensor_type].freqPerMin = limitVal;
-                Timo.settings.get(pkgName)[sensor_type].limitFreq = !limit.isEmpty();
-                FrequencyManager fm = new FrequencyManager(limitVal, 60 * 1000); //60 senconds, 6000 miliseconds
-                Timo.addFrequencyManager(sensor_type,fm);
+                sensorDatas[sensor_type].freqPerMin = limitVal;
+                sensorDatas[sensor_type].limitFreq = !limit.isEmpty();
+
             }
 
             @Override
