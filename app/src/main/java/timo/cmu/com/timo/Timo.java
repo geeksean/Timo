@@ -151,19 +151,6 @@ public class Timo implements IXposedHookLoadPackage {
                             }
                         }
                         //else: no rule specified, do nothing
-
-
-//                        if (s.getType() == Sensor.TYPE_PROXIMITY || s.getType() == Sensor.TYPE_PRESSURE) {
-//
-////                                if (blacklist.get(s.getType()).contains(lpparam.packageName)) {
-////                                    XposedBridge.log("Block app: " + lpparam.packageName + " from accessing " + s.getType());
-////                                    //XposedBridge.log("Setting: sensor data name" + settings.get(lpparam.packageName)[Sensor.TYPE_PROXIMITY].name);
-////
-//////                                float[] values = (float[]) param.args[1];
-//////                                values[0] = 0;
-//////                                param.args[1] = values;
-////                                }
-//                        }
                     }
                 }
         );
