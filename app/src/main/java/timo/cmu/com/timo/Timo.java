@@ -70,10 +70,10 @@ public class Timo implements IXposedHookLoadPackage {
                                     float[] values = (float[]) param.args[1];
                                     XposedBridge.log("original value:" + values[0]);
                                     if (sas.isAccurate) {
-                                        values[0] = GranularityManager.getGranularityValue(GranularityType.Accurate, values[0], 0, s.getMaximumRange());
+                                        GranularityManager.getGranularityValue(GranularityType.Accurate, values, s.getType());
                                     }
                                     else {
-                                        values[0] = GranularityManager.getGranularityValue(GranularityType.NotAccurate, values[0], 0, s.getMaximumRange());
+                                        GranularityManager.getGranularityValue(GranularityType.NotAccurate, values, s.getType());
                                     }
                                     XposedBridge.log("blurred value:" + values[0]);
 
@@ -94,10 +94,10 @@ public class Timo implements IXposedHookLoadPackage {
                                     float[] values = (float[]) param.args[1];
                                     XposedBridge.log("original value:" + values[0]);
                                     if (sas.isAccurate) {
-                                        values[0] = GranularityManager.getGranularityValue(GranularityType.Accurate, values[0], 0, s.getMaximumRange());
+                                        GranularityManager.getGranularityValue(GranularityType.Accurate, values, s.getType());
                                     }
                                     else {
-                                        values[0] = GranularityManager.getGranularityValue(GranularityType.NotAccurate, values[0], 0, s.getMaximumRange());
+                                        GranularityManager.getGranularityValue(GranularityType.NotAccurate, values, s.getType());
                                     }
                                     XposedBridge.log("blurred value:" + values[0]);
                                     param.args[1] = values;
@@ -116,10 +116,10 @@ public class Timo implements IXposedHookLoadPackage {
                                     float[] values = (float[]) param.args[1];
                                     XposedBridge.log("original value:" + values[0]);
                                     if (sas.isAccurate) {
-                                        values[0] = GranularityManager.getGranularityValue(GranularityType.Accurate, values[0], 0, s.getMaximumRange());
+                                        GranularityManager.getGranularityValue(GranularityType.Accurate, values, s.getType());
                                     }
                                     else {
-                                        values[0] = GranularityManager.getGranularityValue(GranularityType.NotAccurate, values[0], 0, s.getMaximumRange());
+                                        GranularityManager.getGranularityValue(GranularityType.NotAccurate, values, s.getType());
                                     }
                                     XposedBridge.log("blurred value:" + values[0]);
 
@@ -140,10 +140,10 @@ public class Timo implements IXposedHookLoadPackage {
                                     float[] values = (float[]) param.args[1];
                                     XposedBridge.log("original value:" + values[0]);
                                     if (sas.isAccurate) {
-                                        values[0] = GranularityManager.getGranularityValue(GranularityType.Accurate, values[0], 0, s.getMaximumRange());
+                                        GranularityManager.getGranularityValue(GranularityType.Accurate, values, s.getType());
                                     }
                                     else {
-                                        values[0] = GranularityManager.getGranularityValue(GranularityType.NotAccurate, values[0], 0, s.getMaximumRange());
+                                        GranularityManager.getGranularityValue(GranularityType.NotAccurate, values, s.getType());
                                     }
                                     XposedBridge.log("blurred value:" + values[0]);
                                     param.args[1] = values;
