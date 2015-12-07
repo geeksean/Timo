@@ -1,4 +1,4 @@
-package timo.cmu.com.timo;
+package timo.cmu.com.timo.managers;
 
 import java.util.Date;
 import java.util.LinkedList;

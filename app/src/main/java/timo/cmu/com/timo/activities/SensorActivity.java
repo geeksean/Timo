@@ -7,37 +7,29 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import timo.cmu.com.timo.FrequencyManager;
 import timo.cmu.com.timo.R;
-import timo.cmu.com.timo.Timo;
-import timo.cmu.com.timo.model.SensorData;
-
-import java.util.*;
+import timo.cmu.com.timo.model.SensorAccessSetting;
 
 /**
  * Created by STuotuo.Wen on 2015/11/21.
  */
 public class SensorActivity extends AppCompatActivity {
 
-    private static int NUM_SENSOR = 13;
+    //private static int SENSOR_NUMS = 13;
     private String pkgName;
     private String appName;
-    private Switch[] switches = new Switch[NUM_SENSOR];
-    private TextView[] textViews = new TextView[NUM_SENSOR];
+    private Switch[] switches = new Switch[SensorAccessSetting.SENSOR_NUMS];
+    private TextView[] textViews = new TextView[SensorAccessSetting.SENSOR_NUMS];
     private Button confirmButton;
     private Context mContext;
-    private SensorData[] sensorDatas = new SensorData[NUM_SENSOR];
+    private SensorAccessSetting[] sensorAccessSettings = new SensorAccessSetting[SensorAccessSetting.SENSOR_NUMS];
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -55,13 +47,13 @@ public class SensorActivity extends AppCompatActivity {
         // pressure sensor
         switches[Sensor.TYPE_PRESSURE] = (Switch) this.findViewById(R.id.accuracy_switch_1);
         textViews[Sensor.TYPE_PRESSURE] = (TextView) this.findViewById(R.id.freq_min1);
-        sensorDatas[Sensor.TYPE_PRESSURE] = new SensorData("Pressure", true, false, 0);
+        sensorAccessSettings[Sensor.TYPE_PRESSURE] = new SensorAccessSetting("Pressure", true, false, 0);
         update(Sensor.TYPE_PRESSURE);
 
         // proximity sensor
         switches[Sensor.TYPE_PROXIMITY] = (Switch) this.findViewById(R.id.accuracy_switch_2);
         textViews[Sensor.TYPE_PROXIMITY] = (TextView) this.findViewById(R.id.freq_min2);
-        sensorDatas[Sensor.TYPE_PROXIMITY] = new SensorData("Proximity", true, false, 0);
+        sensorAccessSettings[Sensor.TYPE_PROXIMITY] = new SensorAccessSetting("Proximity", true, false, 0);
         update(Sensor.TYPE_PROXIMITY);
 
 
@@ -70,21 +62,21 @@ public class SensorActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SensorActivity.this, sensorDatas[Sensor.TYPE_PRESSURE].toString() + "\n" +
-                        sensorDatas[Sensor.TYPE_PROXIMITY].toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SensorActivity.this, sensorAccessSettings[Sensor.TYPE_PRESSURE].toString() + "\n" +
+                        sensorAccessSettings[Sensor.TYPE_PROXIMITY].toString(), Toast.LENGTH_SHORT).show();
 
                 SharedPreferences sh = mContext.getSharedPreferences(pkgName+"_prefs", Context.MODE_WORLD_READABLE);
                 SharedPreferences.Editor editor = sh.edit();
-                editor.putString("i", prefToString(sensorDatas));
+                editor.putString("i", prefToString(sensorAccessSettings));
                 editor.commit();
             }
         });
 
     }
 
-    private String prefToString(SensorData[] sensorDatas){
+    private String prefToString(SensorAccessSetting[] sensorAccessSettings){
         String res = "";
-        for (SensorData sd: sensorDatas){
+        for (SensorAccessSetting sd: sensorAccessSettings){
             res += (sd == null?"null":sd.toString());
             res += ";";
         }
@@ -96,7 +88,7 @@ public class SensorActivity extends AppCompatActivity {
         switches[sensor_type].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                sensorDatas[sensor_type].isAccurate = isChecked;
+                sensorAccessSettings[sensor_type].isAccurate = isChecked;
         }
         });
 
@@ -115,8 +107,8 @@ public class SensorActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     limitVal = 0;
                 }
-                sensorDatas[sensor_type].freqPerMin = limitVal;
-                sensorDatas[sensor_type].limitFreq = !limit.isEmpty();
+                sensorAccessSettings[sensor_type].freqPerSec = limitVal;
+                sensorAccessSettings[sensor_type].limitFreq = !limit.isEmpty();
 
             }
 

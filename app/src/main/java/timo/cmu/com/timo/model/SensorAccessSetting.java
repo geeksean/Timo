@@ -3,21 +3,22 @@ package timo.cmu.com.timo.model;
 /**
  * Created by STuotuo.Wen on 2015/11/21.
  */
-public class SensorData {
+public class SensorAccessSetting {
+    public static int SENSOR_NUMS = 13;
     public String name;
     public boolean isAccurate;
     public boolean limitFreq;
-    public int freqPerMin;
+    public int freqPerSec;
 
-    public SensorData(String name, boolean isAccurate, boolean limitFreq, int freqPerMin) {
+    public SensorAccessSetting(String name, boolean isAccurate, boolean limitFreq, int freqPerSec) {
         this.name = name;
         this.isAccurate = isAccurate;
         this.limitFreq = limitFreq;
-        this.freqPerMin = freqPerMin;
+        this.freqPerSec = freqPerSec;
     }
 
     @Override
     public String toString() {
-        return name + "," + isAccurate + "," + limitFreq + "," + freqPerMin;
+        return name + "," + isAccurate + "," + limitFreq + "," + freqPerSec;
     }
 }
