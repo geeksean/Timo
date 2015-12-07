@@ -56,14 +56,25 @@ public class SensorActivity extends AppCompatActivity {
         sensorAccessSettings[Sensor.TYPE_PROXIMITY] = new SensorAccessSetting("Proximity", true, false, 0);
         update(Sensor.TYPE_PROXIMITY);
 
+        // magnetic sensor
+        switches[Sensor.TYPE_MAGNETIC_FIELD] = (Switch) this.findViewById(R.id.accuracy_switch_3);
+        textViews[Sensor.TYPE_MAGNETIC_FIELD] = (TextView) this.findViewById(R.id.freq_min3);
+        sensorAccessSettings[Sensor.TYPE_MAGNETIC_FIELD] = new SensorAccessSetting("Magnetic", true, false, 0);
+        update(Sensor.TYPE_MAGNETIC_FIELD);
 
-
+        // light sensor
+        switches[Sensor.TYPE_LIGHT] = (Switch) this.findViewById(R.id.accuracy_switch_4);
+        textViews[Sensor.TYPE_LIGHT] = (TextView) this.findViewById(R.id.freq_min4);
+        sensorAccessSettings[Sensor.TYPE_LIGHT] = new SensorAccessSetting("Light", true, false, 0);
+        update(Sensor.TYPE_LIGHT);
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(SensorActivity.this, sensorAccessSettings[Sensor.TYPE_PRESSURE].toString() + "\n" +
-                        sensorAccessSettings[Sensor.TYPE_PROXIMITY].toString(), Toast.LENGTH_SHORT).show();
+                        sensorAccessSettings[Sensor.TYPE_PROXIMITY].toString() + "\n" +
+                        sensorAccessSettings[Sensor.TYPE_MAGNETIC_FIELD].toString() + "\n" +
+                        sensorAccessSettings[Sensor.TYPE_LIGHT].toString(), Toast.LENGTH_SHORT).show();
 
                 SharedPreferences sh = mContext.getSharedPreferences(pkgName+"_prefs", Context.MODE_WORLD_READABLE);
                 SharedPreferences.Editor editor = sh.edit();

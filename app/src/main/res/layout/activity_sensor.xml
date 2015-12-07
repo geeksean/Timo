@@ -1,56 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:text="Pressure Sensor"
-    android:id="@+id/textView"
-    android:layout_marginTop="30dp"/>
+    android:orientation="vertical">
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Accuray"
-        android:id="@+id/accuracy_switch_1"
-        android:checked="true" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="5"
-        android:id="@+id/freq_min1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Proximity Sensor"
-        android:id="@+id/textView1"
-        android:layout_marginTop="50dp"/>
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Pressure Sensor"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Accuray"
-        android:id="@+id/accuracy_switch_2"
-        android:checked="true" />
+            <Switch
+                android:id="@+id/accuracy_switch_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Accuray" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="5"
-        android:id="@+id/freq_min2" />
+            <EditText
+                android:id="@+id/freq_min1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="5"
+                android:inputType="number" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="confirm"
-        android:id="@+id/button"
-        android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="Proximity Sensor"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <Switch
+                android:id="@+id/accuracy_switch_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Accuray" />
+
+            <EditText
+                android:id="@+id/freq_min2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="5"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="Magnetic Filed Sensor"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <Switch
+                android:id="@+id/accuracy_switch_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Accuray" />
+
+            <EditText
+                android:id="@+id/freq_min3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="5"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="Light Sensor"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <Switch
+                android:id="@+id/accuracy_switch_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Accuray" />
+
+            <EditText
+                android:id="@+id/freq_min4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="5"
+                android:inputType="number" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="confirm" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
